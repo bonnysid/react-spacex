@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './main.css';
 
-const Main = () => (
-    <section className="main">
-        <h1 className="title">
-        Falcon 1
-        </h1>
+const video = {
+    'Falcon 1': 'moon',
+    'Falcon 9': 'earth',
+    'Falcon Heavy': 'mars',
+    other: 'space'
+}
 
-        <div className="video-container">
-        <video className="video" autoPlay loop muted src="./video/moon.mp4"></video>
+export default class Main extends Component{
 
-        </div>
-    </section>
-);
+    constructor (props) {
+        super(props);
+    }
 
-export default Main;
+    render() {
+        const {rocket} = this.props; 
+        return (
+            <section className="main">
+                <h1 className="title">
+                    {rocket}
+                </h1>
+
+                <div className="video-container">
+                <video 
+                className="video" 
+                autoPlay loop muted 
+                src={`./video/${video.hasOwnProperty(rocket) ? video[rocket] : video.other}.mp4`}/>
+
+                </div>
+            </section>
+        );
+    }
+}
