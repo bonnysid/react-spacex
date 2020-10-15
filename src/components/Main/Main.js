@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './main.css';
 
 const video = {
@@ -8,28 +8,25 @@ const video = {
     other: 'space'
 }
 
-export default class Main extends Component{
+const Main = (props) => {
+    const {rocket} = props; 
 
-    constructor (props) {
-        super(props);
-    }
+    return (
+        <section className="main">
+            <h1 className="title">
+                {rocket ? rocket : "Calendar SpaceX"}
+            </h1>
 
-    render() {
-        const {rocket} = this.props; 
-        return (
-            <section className="main">
-                <h1 className="title">
-                    {rocket}
-                </h1>
-
-                <div className="video-container">
-                <video 
+            {rocket && <div className="video-container">
+            <video 
                 className="video" 
                 autoPlay loop muted 
                 src={`./video/${video.hasOwnProperty(rocket) ? video[rocket] : video.other}.mp4`}/>
 
-                </div>
-            </section>
-        );
-    }
+            </div>}
+        </section>
+    );
+    
 }
+
+export default Main;
