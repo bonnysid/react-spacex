@@ -9,12 +9,13 @@ const video = {
 }
 
 const Main = (props) => {
-    const {rocket} = props; 
+    const {rocket} = props;
+    const {title} = props; 
 
     return (
         <section className="main">
             <h1 className="title">
-                {rocket ? rocket : "Calendar SpaceX"}
+                {rocket ? rocket : title ? title : "Calendar SpaceX"}
             </h1>
 
             {rocket && <div className="video-container">

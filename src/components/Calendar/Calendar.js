@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const fetchData = new FetchData();
 
-const Calendar = () => {
+const Calendar = ({updateCard}) => {
 
 	const [data, setData] = useState([]);
 
@@ -18,19 +18,19 @@ const Calendar = () => {
 	return (
 		<>
 			<Main />
-			<section class="calendar">
-				<div class="container">
-					<ul class="calendar-list">
+			<section className="calendar">
+				<div className="container">
+					<ul className="calendar-list">
 						
 						{data.map(item => (
-							<li key={item.id} class="calendar-item">
-								<article class="launches">
-									<div class="launches-image">
+							<li key={item.id} className="calendar-item">
+								<article className="launches">
+									<div className="launches-image">
 										<img src={item.links.patch.small} alt=""/>
 									</div>
-									<div class="launches-content">
-										<h2 class="launches-title">{item.name}</h2>
-										<Link to="./details" class="button launches-details">Подробнее</Link>
+									<div className="launches-content">
+										<h2 className="launches-title">{item.name}</h2>
+										<Link onClick={() => updateCard(item)} to="./details" className="button launches-details">Подробнее</Link>
 									</div>
 								</article>
 							</li>

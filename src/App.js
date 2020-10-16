@@ -21,7 +21,8 @@ export default class App extends Component{
     rocket: "Falcon 1",
     rocketFeatures: null,
     rockets: [],
-    company: null
+    company: null,
+    card: null,
   };
 
   componentDidMount() {
@@ -50,6 +51,10 @@ export default class App extends Component{
       .then(company => this.setState({company}));
   }
 
+  updateCard = (card) => {
+    this.setState({card});
+  }
+
   render() {
     return (
       <BrowserRouter>
@@ -65,11 +70,11 @@ export default class App extends Component{
         </Route>
 
         <Route path='/calendar'>
-          <Calendar/>
+          <Calendar updateCard={this.updateCard}/>
         </Route>
 
         <Route path='/details'>
-          <Details/>
+          {this.state.card && <Details {...this.state.card}/>}
         </Route>
 
         {this.state.company && <Footer {...this.state.company}/>}
