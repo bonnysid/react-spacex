@@ -1,37 +1,42 @@
-import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Main from '../Main';
 import './details.css';
+import useLaunches from '../hooks/useLaunches';
+import Youtube from 'react-youtube';
 
 
 
-const Details = ({
-	name,
-	links,
-	details
-}) => {
+const Details = (props) => {
+	const [launch, setLaunch] = useState(null);
+	const { getLaunch } = useLaunches(); 
 	const history = useHistory();
 
+	useEffect(() => {
+		setLaunch(getLaunch(props.match.params.id))
+	}, [getLaunch, props.match.params.id]);
+
+	if (!launch) return <div>Загрузка...</div>;
+	const { name, links, details } = launch;
+
 	return (
-		<>
+		<div>
 			<Main title={name}/>
 			<main className="details">
 				<div className="container">
 					<div className="details-row">
 						<div className="details-image">
-							<img src={links.patch.small} alt=""/>
+							<img src={links.patch.small} alt={name}/>
 						</div>
 						<div className="details-content">
 							<p className="details-description">{details}</p>
 						</div>
 					</div>
-					<div>
-						<iframe className="details-youtube" width="560" height="315" src={`https://www.youtube.com/embed/${links.youtube_id}`} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-					</div>
+					<Youtube className='details-youtube' videoId={links.youtube_id}/>
 				</div>
 				<a onClick={history.goBack} className="button button-back">GO BACK</a>
 			</main>
-		</>
+		</div>
 	
 	);
 }

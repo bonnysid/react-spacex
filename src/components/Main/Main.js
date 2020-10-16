@@ -15,7 +15,7 @@ const Main = (props) => {
     return (
         <section className="main">
             <h1 className="title">
-                {rocket ? rocket : title ? title : "Calendar SpaceX"}
+                {title || rocket}
             </h1>
 
             {rocket && <div className="video-container">

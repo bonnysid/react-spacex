@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import './style.css';
 import Header from './components/Header';
-import Main from './components/Main';
 import Features from './components/Features';
 import Footer from './components/Footer';
 import FetchData from './service/FetchData';
@@ -22,7 +21,6 @@ export default class App extends Component{
     rocketFeatures: null,
     rockets: [],
     company: null,
-    card: null,
   };
 
   componentDidMount() {
@@ -51,31 +49,26 @@ export default class App extends Component{
       .then(company => this.setState({company}));
   }
 
-  updateCard = (card) => {
-    this.setState({card});
-  }
-
   render() {
     return (
       <BrowserRouter>
         <Header rockets={this.state.rockets} changeRocket={this.changeRocket}/>
 
-        <Route exact path='/'>
-          {this.state.company && <Home company={this.state.company}/>}
-        </Route>
+        <Route 
+          exact 
+          path='/' 
+          render={() => this.state.company && <Home company={this.state.company}/>}
+        />
 
-        <Route path='/rocket'>
-          <Main rocket={this.state.rocket}/>
-          {this.state.rocketFeatures && <Features {...this.state.rocketFeatures}/>}
-        </Route>
+        <Route 
+          path='/rocket' 
+          render={(() => this.state.rocketFeatures && <Features {...this.state.rocketFeatures}/>)}
+        />
 
-        <Route path='/calendar'>
-          <Calendar updateCard={this.updateCard}/>
-        </Route>
+        <Route path='/calendar' component={Calendar} />
+  
+        <Route path='/details/:id' component={Details} />
 
-        <Route path='/details'>
-          {this.state.card && <Details {...this.state.card}/>}
-        </Route>
 
         {this.state.company && <Footer {...this.state.company}/>}
       </BrowserRouter>
