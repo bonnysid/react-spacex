@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './features.css';
 import RellaxWrapper from 'react-rellax-wrapper';
 import Main from '../Main';
+import useRocket from '../hooks/useRocket';
 
 const rocketImg = {
 	'Falcon 1': 'falcon-1',
@@ -10,68 +11,83 @@ const rocketImg = {
 	'Starship': 'starship'
 }
 
-const Features = ({
-	name, 
-	height, 
-	diameter, 
-	description, 
-	mass, 
-	payload_weights: pWeight
-	}) => (
-		<>
-			<Main rocket={name}/>
-			<section className="features">
-				<h2 className="features-title">
-					{name} <br/>Overview
-				</h2>
-				<div className="overview">
+const Features = (props) => {
 
-					<table className="table">
-						<caption className="table-title">
-							Size
-						</caption>
-						<thead>
-							<tr>
-								<td className="table-column">HEIGHT</td>
-								<td className="table-column">{height.meters} m / {height.feet} f</td>
-							</tr>
-							<tr>
-								<td className="table-column">DIAMETER</td>
-								<td className="table-column"> {diameter.meters} m / {diameter.feet} f</td>
-							</tr>
-							<tr>
-								<td className="table-column">MASS</td>
-								<td className="table-column">{mass.kg} kg / {mass.lb} lb</td>
-							</tr>
-							
-							{pWeight.map(item => (
-								<tr key={item.id}>
-									<td className="table-column">PAYLOAD TO {item.id.toUpperCase()}</td>
-									<td className="table-column">{ item.kg} kg / {item.lb} lb</td>
+	const [data, setData] = useState(null);
+	const { getRocket } = useRocket();
+
+	useEffect(() => {
+		setData(getRocket(props.match.params.rocket.replace(/_/g, " ")));
+	}, [getRocket, props.match.params.rocket]);
+
+	if (!data) { return <div>Загрузка...</div>; }
+
+	const {
+		name, 
+		height, 
+		diameter, 
+		description, 
+		mass, 
+		payload_weights: pWeight,
+		} = data;
+
+		return (
+			<>
+				<Main rocket={name}/>
+				<section className="features">
+					<h2 className="features-title">
+						{name} <br/>Overview
+					</h2>
+					<div className="overview">
+
+						<table className="table">
+							<caption className="table-title">
+								Size
+							</caption>
+							<thead>
+								<tr>
+									<td className="table-column">HEIGHT</td>
+									<td className="table-column">{height.meters} m / {height.feet} f</td>
 								</tr>
-							))}
-						</thead>
-					</table>
-					<RellaxWrapper speed={14}>
-						<img
-							src={`img/${rocketImg[name]}.png`}
-							alt="rocket"
-							className="rocket"
-						/>
-					</RellaxWrapper>
+								<tr>
+									<td className="table-column">DIAMETER</td>
+									<td className="table-column"> {diameter.meters} m / {diameter.feet} f</td>
+								</tr>
+								<tr>
+									<td className="table-column">MASS</td>
+									<td className="table-column">{mass.kg} kg / {mass.lb} lb</td>
+								</tr>
+								
+								{pWeight.map(item => (
+									<tr key={item.id}>
+										<td className="table-column">PAYLOAD TO {item.id.toUpperCase()}</td>
+										<td className="table-column">{ item.kg} kg / {item.lb} lb</td>
+									</tr>
+								))}
+							</thead>
+						</table>
+						<RellaxWrapper speed={14}>
+							<img
+								src={`/img/${rocketImg[name]}.png`}
+								alt="rocket"
+								className="rocket"
+							/>
+						</RellaxWrapper>
 
-					<article>
-						<h3 className="features-subtitle">DESCRIPTION</h3>
-						<p className="features-text">
-							{description}
-						</p>
-					</article>
-				</div>
-			</section>
-		</>
+						<article>
+							<h3 className="features-subtitle">DESCRIPTION</h3>
+							<p className="features-text">
+								{description}
+							</p>
+						</article>
+					</div>
+				</section>
+			</>
+		);
+
 		
 
-);
+};
 
 
 export default Features;

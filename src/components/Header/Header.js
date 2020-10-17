@@ -2,8 +2,11 @@ import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import './header.css';
 import logo from './logo.svg';
+import useRocket from '../hooks/useRocket';
 
 const Header = (props) => {
+    const { data } = useRocket();
+
     return (
         <header className="header">
             <Link to='/'>
@@ -15,13 +18,12 @@ const Header = (props) => {
             </Link>
             <nav className="main-nav nav">
             <ul className="list">
-                {props.rockets.map((item, i) => (
+                {data.map((rocket, i) => (
                     <li key={i} className="item">
                         <Link 
-                            to="/rocket" 
-                            onClick={() => props.changeRocket(item)} 
+                            to={`/rocket/${rocket.name.replace(/ /g, "_")}`} 
                             className="item-link"
-                        >{item}</Link>
+                        >{rocket.name}</Link>
                     </li>                   
                 ))}
             </ul>

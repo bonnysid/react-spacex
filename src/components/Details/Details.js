@@ -34,7 +34,7 @@ const Details = (props) => {
 					</div>
 					<Youtube className='details-youtube' videoId={links.youtube_id}/>
 				</div>
-				<a onClick={history.goBack} className="button button-back">GO BACK</a>
+				<div onClick={history.goBack} className="button button-back">GO BACK</div>
 			</main>
 		</div>
 	
